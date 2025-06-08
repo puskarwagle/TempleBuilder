@@ -5,6 +5,7 @@ use Livewire\Volt\Volt;
 
 // Temple Builder
 use App\Livewire\TempleBuilder\TempleBuilder;
+use App\Livewire\TempleBuilder\RouteExplorer;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,6 +13,7 @@ Route::get('/', function () {
 
 // Temple Builder Routes
 Route::get('temple-builder', TempleBuilder::class)->name('temple-builder');
+Route::get('temple-routes', RouteExplorer::class)->name('temple-routes');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

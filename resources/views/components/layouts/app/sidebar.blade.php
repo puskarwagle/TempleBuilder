@@ -17,6 +17,12 @@
                 </flux:navlist.group>
             </flux:navlist>
 
+            <flux:navlist variant="outline">
+                <flux:navlist.group :heading="__('Temple Builder')" class="grid">
+                    <flux:navlist.item icon="home" :href="route('temple-builder')" :current="request()->routeIs('temple-builder')" wire:navigate>{{ __('temple-builder') }}</flux:navlist.item>
+                </flux:navlist.group>
+            </flux:navlist>
+
             <flux:spacer />
 
             <flux:navlist variant="outline">

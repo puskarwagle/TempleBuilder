@@ -1,9 +1,13 @@
 [alias]
-scaffold-save = "!f() { \
-  git add app/Console/Commands/TempleBuilderCommand.php && \
-  git add app/stubs/ && \
-  git add .gitconfig && \
-  git commit -m \"Scaffold: TempleBuilder command + stubs\" && \
-  git restore . && \
-  git clean -fd; \
-}; f"
+    scaffold-save = "!f() { \
+        msg=\"$1\"; \
+        if [ -z \"$msg\" ]; then \
+            echo '❌ Please provide a commit message.' >&2; \
+            exit 1; \
+        fi; \
+        git add app/Console/Commands/TempleBuilderCommand.php && \
+        git add app/stubs/ && \
+        git commit -m \"$msg\" && \
+        git restore . && \
+        git clean -fd; \
+    }; f"

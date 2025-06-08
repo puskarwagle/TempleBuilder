@@ -12,7 +12,7 @@ class RouteExplorer extends Component
 
     public function mount()
     {
-        $this->refreshRoutes();
+        // $this->refreshRoutes();
     }
 
     public function refreshRoutes()
