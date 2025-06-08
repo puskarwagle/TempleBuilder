@@ -4,87 +4,68 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
 class TempleBuilderCommand extends Command
 {
     protected $signature = 'temple:builder';
-    protected $description = 'Quickly scaffold a Livewire + Blade + Controller + Route for a temple module';
+    protected $description = 'Scaffold TempleBuilder with Livewire, Alpine.js, Tailwind CSS, and DaisyUI';
 
     public function handle()
     {
-        // 1. Check if Livewire is installed
-        $composer = json_decode(file_get_contents(base_path('composer.json')), true);
-        $requires = array_merge($composer['require'] ?? [], $composer['require-dev'] ?? []);
+        $this->line('❓ Do you want me to install Livewire, Alpine.js, Tailwind CSS, and DaisyUI for you?');
 
-        if (!array_key_exists('livewire/livewire', $requires)) {
-            $this->error('⚠️  Livewire is not installed.');
-            $this->line('👉 Run:');
-            $this->line('    composer require livewire/livewire');
+        if ($this->confirm('👉 Proceed with installation?')) {
+            $this->info('📦 Installing required packages...');
+
+            exec('composer require livewire/livewire', $out1, $err1);
+            exec('npm install -D tailwindcss postcss autoprefixer', $out2, $err2);
+            exec('npx tailwindcss init -p', $out3, $err3);
+            exec('npm install -D daisyui', $out4, $err4);
+            exec('npm install alpinejs', $out5, $err5);
+
+            $installed = true;
+            $this->info('✅ Livewire, Alpine.js, Tailwind, and DaisyUI installed.');
+            $this->info('📄 app.css updated with Tailwind import and DaisyUI plugin.');
+        } elseif ($this->confirm('⚠️ Continue *without* installing the stack?', false)) {
+            $installed = false;
+            $this->warn('⚠️ Proceeding without installing Livewire, Tailwind, DaisyUI, or Alpine.js...');
+        } else {
+            $this->warn('❌ Setup cancelled by user.');
             return Command::FAILURE;
         }
 
-        // 2. Check if Livewire is installed
-        if (!File::exists(base_path('tailwind.config.js'))) {
-            $this->warn('⚠️  Tailwind CSS is not installed.');
+        // 📁 Ensure directories
+        $classDir = app_path('Livewire/TempleBuilder');
+        $viewDir = resource_path('views/livewire/templebuilder');
 
-            if ($this->confirm('💬 Do you want to install Tailwind CSS now?')) {
-                $this->info('📦 Installing Tailwind via npm...');
-                exec('npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p', $output, $status);
+        File::ensureDirectoryExists($classDir);
+        File::ensureDirectoryExists($viewDir);
 
-                if ($status === 0) {
-                    $this->info('✅ Tailwind CSS installed and config generated.');
-                } else {
-                    $this->error('❌ Tailwind installation failed. Check your Node/npm setup.');
-                    return Command::FAILURE;
-                }
-            } else {
-                $this->line('⏭️ Skipped Tailwind installation.');
+        // 📄 Copy stubs
+        $stubMap = [
+            'TempleBuilder.php.stub'        => $classDir . '/TempleBuilder.php',
+            'RouteExplorer.php.stub'        => $classDir . '/RouteExplorer.php',
+            'temple-builder.blade.php.stub' => $viewDir . '/temple-builder.blade.php',
+            'route-explorer.blade.php.stub' => $viewDir . '/route-explorer.blade.php',
+            'route-node.blade.php.stub'     => $viewDir . '/route-node.blade.php',
+            'welcome.blade.php.stub'        => resource_path('views/welcome.blade.php'),
+            'app.css.stub'                  => resource_path('css/app.css'),
+        ];
+
+        foreach ($stubMap as $stub => $target) {
+            $stubPath = base_path("app/stubs/{$stub}");
+            if (!File::exists($stubPath)) {
+                $this->error("❌ Missing stub: $stubPath");
                 return Command::FAILURE;
             }
+            File::put($target, File::get($stubPath));
+            $this->info("✅ Stub deployed: $target");
         }
 
+        $this->line($installed
+            ? '🎉 TempleBuilder setup complete. Tailwind + DaisyUI integrated. Stubs deployed. All ready to roll.'
+            : '✅ Stubs deployed. Make sure you have Livewire, Tailwind, DaisyUI, and Alpine.js installed manually.');
 
-        // 2. Ensure directories exist
-        $livewireClassDir = app_path('Livewire/TempleBuilder');
-        $livewireViewDir = resource_path('views/livewire');
-
-        if (!File::exists($livewireClassDir)) {
-            File::makeDirectory($livewireClassDir, 0755, true);
-            $this->info("📁 Created directory: $livewireClassDir");
-        }
-
-        if (!File::exists($livewireViewDir)) {
-            File::makeDirectory($livewireViewDir, 0755, true);
-            $this->info("📁 Created directory: $livewireViewDir");
-        }
-
-        // 3. Generate Livewire class file
-        $stubClassPath = base_path('app/stubs/TempleBuilderClass.php.stub');
-        $classTargetPath = $livewireClassDir . '/TempleBuilderView.php';
-
-        if (!File::exists($stubClassPath)) {
-            $this->error("❌ Missing stub: $stubClassPath");
-            return Command::FAILURE;
-        }
-
-        File::put($classTargetPath, File::get($stubClassPath));
-        $this->info("✅ Created Livewire class: $classTargetPath");
-
-        // 4. Generate Livewire view file
-        $stubViewPath = base_path('app/stubs/temple-builder-view.blade.php.stub');
-        $viewTargetPath = $livewireViewDir . '/temple-builder-view.blade.php';
-
-        if (!File::exists($stubViewPath)) {
-            $this->error("❌ Missing stub: $stubViewPath");
-            return Command::FAILURE;
-        }
-
-        File::put($viewTargetPath, File::get($stubViewPath));
-        $this->info("✅ Created Livewire view: $viewTargetPath");
-
-        $this->info("🎉 TempleBuilderView component setup complete.");
         return Command::SUCCESS;
     }
-
 }
