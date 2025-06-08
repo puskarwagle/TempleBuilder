@@ -34,21 +34,18 @@
                         </li>
                     </ul>
                 </div>
-                <a class="btn btn-ghost text-xl">daisyUI</a>
+                <a class="btn btn-ghost text-xl">Temple Builder</a>
             </div>
             <div class="navbar-center hidden lg:flex">
                 <ul class="menu menu-horizontal px-1">
-                    <li><a>Item 1</a></li>
+                    <li><a href="{{ route('home') }}" wire:navigate>Home</a></li>
                     <li>
-                        <details>
-                            <summary>Parent</summary>
-                            <ul class="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </details>
+                        <span>Water</span>
+                        <ul class="p-2">
+                            <li><a href="{{ route('water.hydrogen') }}" wire:navigate>Hydrogen</a></li>
+                            <li><a href="{{ route('water.oxygen') }}" wire:navigate>Oxygen</a></li>
+                        </ul>
                     </li>
-                    <li><a>Item 3</a></li>
                 </ul>
             </div>
             <div class="navbar-end">
