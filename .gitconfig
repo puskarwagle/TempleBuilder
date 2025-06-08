@@ -1,0 +1,9 @@
+[alias]
+scaffold-save = "!f() { \
+  git add app/Console/Commands/TempleBuilderCommand.php && \
+  git add app/stubs/ && \
+  git add .gitconfig && \
+  git commit -m \"Scaffold: TempleBuilder command + stubs\" && \
+  git restore . && \
+  git clean -fd; \
+}; f"
