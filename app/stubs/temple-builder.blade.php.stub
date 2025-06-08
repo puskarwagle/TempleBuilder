@@ -9,7 +9,7 @@
             <button wire:click="mount" class="btn btn-sm btn-success mb-2">🔄 Refresh Routes</button>        
         </div>
         <div :class="classes" class="transition-all duration-300 border border-accent-300 p-4 rounded-lg min-h-[50px]">
-            @livewire('route-explorer')
+            {{-- @livewire('route-explorer') --}}
         </div>
     </div>
 
@@ -17,7 +17,7 @@
     <div class="border border-accent-300 rounded-lg p-4 mb-4">
         <h2 class="font-semibold mb-2">Page Viewer</h2>
         <div class="transition-all duration-300 border border-accent-300 p-4 rounded-lg min-h-[50px]">
-            @livewire('component-preview')
+            {{-- @livewire('component-preview') --}}
         </div>
     </div>
 

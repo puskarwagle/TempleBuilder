@@ -50,6 +50,8 @@ class TempleBuilderCommand extends Command
             'route-node.blade.php.stub'     => $viewDir . '/route-node.blade.php',
             'welcome.blade.php.stub'        => resource_path('views/welcome.blade.php'),
             'app.css.stub'                  => resource_path('css/app.css'),
+            'web.php.stub'                  => base_path('routes/web.php'),
+            'sidebar.blade.php.stub'        => resource_path('views/components/layouts/app/sidebar.blade.php'),
         ];
 
         foreach ($stubMap as $stub => $target) {

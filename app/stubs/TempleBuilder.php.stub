@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\TempleBuilder;
 
 use Livewire\Component;
 
-class VisualTailwindEditor extends Component
+class TempleBuilder extends Component
 {
     public function render()
     {
-        return view('livewire.visual-tailwind-editor');
+        return view('livewire.templebuilder.temple-builder');
     }
 }
