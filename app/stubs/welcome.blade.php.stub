@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="night">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +9,9 @@
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    {{-- Load Tailwind CSS and your JS --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 <body class="">
@@ -50,31 +53,45 @@
                 </ul>
             </div>
             <div class="navbar-end">
-                <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn m-1">Account</div>
-                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                        @if (Route::has('login'))
-                        <li>
-                            <nav class="flex flex-col gap-2 px-2">
-                                @auth
-                                <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-sm rounded-sm border border-[#19140035] dark:border-[#3E3E3A] hover:border-[#1915014a] dark:hover:border-[#62605b] text-[#1b1b18] dark:text-[#EDEDEC]">
+                @if (Route::has('login'))
+                <nav class="flex items-center justify-end gap-4">
+
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button" class="m-1">
+                            {{-- dark Mode SVG --}}
+                            <svg id="darkFace" class="theme-face" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 100 100" style="border-radius: 50%; display: block;">
+                                <circle cx="50" cy="50" r="48" style="stroke:#444; stroke-width:4; fill:#222;" />
+                                <circle cx="50" cy="35" r="12" style="fill:#555;" />
+                                <path d="M30,75 Q50,55 70,75" style="fill:#555;" />
+                            </svg>
+                        </div>
+
+                        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                            @auth
+                            <li>
+                                <a href="{{ url('/dashboard') }}">
                                     Dashboard
                                 </a>
-                                @else
-                                <a href="{{ route('login') }}" class="px-4 py-2 text-sm rounded-sm border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] text-[#1b1b18] dark:text-[#EDEDEC]">
+                            </li>
+                            @else
+                            <li>
+                                <a href="{{ route('login') }}">
                                     Log in
                                 </a>
-                                @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="px-4 py-2 text-sm rounded-sm border border-[#19140035] dark:border-[#3E3E3A] hover:border-[#1915014a] dark:hover:border-[#62605b] text-[#1b1b18] dark:text-[#EDEDEC]">
+                            </li>
+                            @if (Route::has('register'))
+                            <li>
+                                <a href="{{ route('register') }}">
                                     Register
                                 </a>
-                                @endif
-                                @endauth
-                            </nav>
-                        </li>
-                        @endif
-                    </ul>
-                </div>
+                            </li>
+                            @endif
+                            @endauth
+                        </ul>
+                    </div>
+
+                </nav>
+                @endif
             </div>
         </div>
     </header>
