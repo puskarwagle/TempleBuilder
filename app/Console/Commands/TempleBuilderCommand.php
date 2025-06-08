@@ -37,9 +37,13 @@ class TempleBuilderCommand extends Command
         // 📁 Ensure directories
         $classDir = app_path('Livewire/TempleBuilder');
         $viewDir = resource_path('views/livewire/templebuilder');
+        $groupsViewsDir = resource_path('views/livewire/groups/water');
+        $groupsClassDir = app_path('Livewire/Groups/Water');
 
         File::ensureDirectoryExists($classDir);
         File::ensureDirectoryExists($viewDir);
+        File::ensureDirectoryExists($groupsViewsDir);
+        File::ensureDirectoryExists($groupsClassDir);
 
         // 📄 Copy stubs
         $stubMap = [
@@ -52,6 +56,12 @@ class TempleBuilderCommand extends Command
             'app.css.stub'                  => resource_path('css/app.css'),
             'web.php.stub'                  => base_path('routes/web.php'),
             'sidebar.blade.php.stub'        => resource_path('views/components/layouts/app/sidebar.blade.php'),
+            'Home.php.stub'                 => app_path('Livewire/Home.php'),
+            'home.blade.php.stub'           => resource_path('views/livewire/home.blade.php'),
+            'oxygen.blade.php.stub'         => $groupsViewsDir . '/oxygen.blade.php',
+            'Oxygen.php.stub'               => $groupsClassDir . '/Oxygen.php',
+            'hydrogen.blade.php.stub'       => $groupsViewsDir . '/hydrogen.blade.php',
+            'Hydrogen.php.stub'             => $groupsClassDir . '/Hydrogen.php',
         ];
 
         foreach ($stubMap as $stub => $target) {

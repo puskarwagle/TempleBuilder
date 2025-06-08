@@ -1,6 +1,6 @@
 <div x-data="{ classes: '', selectedComponent: '', components: ['button', 'card', 'badge'] }" class="p-6 shadow-md">
     <!-- Title -->
-    <h1 class="text-2xl font-bold mb-4 text-primary text-center">Visual Tailwind Editor</h1>
+    <h1 class="text-2xl font-bold mb-4 text-primary text-center">Temple Builder</h1>
 
     <!-- Pages and Navigation and Routing Area -->
     <div class="border border-accent-300 rounded-lg p-4 mb-4">
